@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-const grid = readFileSync('./04-ceres-search/p1.input.txt', 'utf-8')
+const grid = readFileSync('./04-ceres-search/p2.input.txt', 'utf-8')
   .trim()
   .split('\n')
   .map(line => line.trim().split(''));
