@@ -17,8 +17,6 @@ interface Rule {
   after: number;
 }
 
-
-
 /**
  * Performs topological sort on the given list of items according to the provided rules.
  * Can sort a DAG (Directed Acyclic Graph) in linear time. https://en.wikipedia.org/wiki/Directed_acyclic_graph
@@ -76,3 +74,14 @@ export const topologicalSort = (pages: number[], rules: Rule[]): number[] => {
 
   return sortedPages;
 }
+
+/**
+ * Calculates the greatest common divisor of two numbers.
+ * @param a The first number.
+ * @param b The second number.
+ * @returns The greatest common divisor of the two numbers.
+ */
+export const gcd = (a: number, b: number): number => {
+  if (b === 0) return Math.abs(a);
+  return gcd(b, a % b);
+};
