@@ -51,42 +51,42 @@ function getValidNeighbors(pos: Position, currentHeight: number): Position[] {
 }
 
 function countDistinctPaths(start: Position): number {
-  // Use dynamic programming to count paths
-  // dp[row][col][height] represents number of paths to this position at this height
-  // Read here: https://en.wikipedia.org/wiki/Dynamic_programming
-  // Essentially, store state at each position for each height.
-  const dp: number[][][] = Array(numRows).fill(null).map(() =>
-    Array(numCols).fill(null).map(() =>
-      Array(10).fill(0)
-    )
+  // dp[row][col] represents number of paths to this position
+  let dp: number[][] = Array(numRows).fill(null).map(() =>
+    Array(numCols).fill(0)
   );
 
   // Initialize starting point
-  dp[start.row][start.col][0] = 1;
+  dp[start.row][start.col] = 1;
 
-  // Process each height level
+  // Process each position in order of height
   for (let height = 0; height < 9; height++) {
-    // For each position in the map
+    const newDp = Array(numRows).fill(null).map(() => Array(numCols).fill(0));
+    
+    // Look for positions with current height that have paths to them
     for (let row = 0; row < numRows; row++) {
       for (let col = 0; col < numCols; col++) {
-        if (dp[row][col][height] > 0) {
-          // Get valid neighbors for current position
+        if (map[row][col] === height && dp[row][col] > 0) {
+          // Get valid neighbors (positions with height + 1)
           const neighbors = getValidNeighbors({ row, col }, height);
           
           // Add paths to neighbors
           for (const neighbor of neighbors) {
-            dp[neighbor.row][neighbor.col][height + 1] += dp[row][col][height];
+            newDp[neighbor.row][neighbor.col] += dp[row][col];
           }
         }
       }
     }
+    dp = newDp;
   }
 
-  // Sum up all paths that reach height 9
+  // Sum up all paths that reach height 9 positions
   let totalPaths = 0;
   for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
-      totalPaths += dp[row][col][9];
+      if (map[row][col] === 9) {
+        totalPaths += dp[row][col];
+      }
     }
   }
 
